@@ -37,11 +37,16 @@
     #spinButton:hover {
       background-color: #a80e2a;
     }
-    #pointer {
+    .pointer {
       position: absolute;
-      top: 140px;
+      top: 10px;
       left: 50%;
       transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 25px solid transparent;
+      border-right: 25px solid transparent;
+      border-bottom: 50px solid #dc143c; /* Pointer color */
     }
     .container {
       position: relative;
@@ -52,8 +57,8 @@
 </head>
 <body>
   <div class="container">
+    <div class="pointer"></div>
     <canvas id="wheelCanvas" width="500" height="500"></canvas>
-    <img id="pointer" src="https://i.imgur.com/nb6yYvV.png" alt="Pointer" width="50" height="50">
   </div>
   <button id="spinButton" onclick="startSpin();">Spin the Wheel!</button>
 
