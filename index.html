@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weekend Wheel</title>
+  <!-- Include Winwheel.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Winwheel.js/2.7.0/Winwheel.min.js"></script>
+  <!-- Include GSAP for animation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+  <!-- Include Howler.js for sound (optional) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+  <!-- Include Confetti.js for confetti effect (optional) -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+  <style>
+    body {
+      background-color: #FFFFFF;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    #wheelCanvas {
+      margin: 20px auto;
+      display: block;
+      background-color: #FFFFFF;
+    }
+    #spinButton {
+      background-color: #dc143c;
+      color: #FFFFFF;
+      border: none;
+      padding: 15px 30px;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    #spinButton:hover {
+      background-color: #a80e2a;
+    }
+    #pointer {
+      position: absolute;
+      top: 140px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .container {
+      position: relative;
+      width: 500px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <canvas id="wheelCanvas" width="500" height="500"></canvas>
+    <img id="pointer" src="https://i.imgur.com/nb6yYvV.png" alt="Pointer" width="50" height="50">
+  </div>
+  <button id="spinButton" onclick="startSpin();">Spin the Wheel!</button>
+
+  <script>
+    // List of prompts
+    var prompts = [
+      "Share a highlight from your weekend in three words.",
+      "What's one new thing you tried this weekend?",
+      "Did you discover any new music, movies, or shows recently? Give us a quick recommendation.",
+      "What was the most relaxing part of your weekend?",
+      "Share a photo from your weekend and give us the backstory.",
+      "What’s something funny or unexpected that happened to you recently?",
+      "Did you cook or try any new recipes this weekend? What was it?",
+      "What’s the best conversation you had over the weekend?",
+      "Did you visit any new places locally? What did you think?",
+      "Share one thing you’re looking forward to this week.",
+      "What was the most challenging part of your weekend, and how did you handle it?",
+      "Did you engage in any hobbies or activities? What did you do?",
+      "Who did you spend time with this weekend, and what did you do?",
+      "Tell us about a moment this weekend that made you smile.",
+      "Was there a lesson you learned over the weekend, however small?",
+      "Share a goal you accomplished over the weekend.",
+      "What’s one thing you did this weekend to help relax and recharge?",
+      "Did you pick up any new books or start any new projects?",
+      "Share an act of kindness you either witnessed or participated in over the weekend.",
+      "What was the best meal or drink you had over the weekend?",
+      "What's one small win from your weekend that made you feel good?",
+      "Did you read or listen to anything inspiring or thought-provoking?",
+      "Share a simple joy or moment of relaxation from your weekend.",
+      "What was the most interesting place you visited this weekend?",
+      "Did you learn something new or surprising?",
+      "What's one activity you wish you had more time for this weekend?",
+      "Did you meet someone new or catch up with an old friend?",
+      "Share one way you unplugged or disconnected this weekend.",
+      "What's one thing you’re grateful for from this weekend?",
+      "Did you tackle any home projects or hobbies? How did it go?",
+      "What was the most spontaneous thing you did over the weekend?",
+      "What's one goal you have for the upcoming week inspired by your weekend?",
+      "Did you celebrate or recognize any special occasions?",
+      "Share one moment from your weekend that made you laugh.",
+      "What's one way you pushed yourself outside your comfort zone this weekend?",
+      "Did you have any unexpected conversations or interactions?",
+      "What’s a small act of kindness you witnessed or participated in?",
+      "Share a new habit or routine you started over the weekend.",
+      "Did you enjoy any outdoor activities or explore nature?",
+      "What's one thing you're looking forward to next weekend?"
+    ];
+
+    // Define colors
+    var colors = ['#dc143c', '#ffbf5d', '#000000', '#dc143c', '#ffbf5d', '#000000'];
+
+    // Create an array of segment objects
+    var segments = [];
+    for (var i = 0; i < prompts.length; i++) {
+      segments.push({
+        'fillStyle': colors[i % colors.length],
+        'text': prompts[i],
+        'textFontSize': 12,
+        'textFillStyle': '#FFFFFF',
+        'strokeStyle': '#FFFFFF',
+        'lineWidth': 1
+      });
+    }
+
+    // Initialize the wheel
+    var theWheel = new Winwheel({
+      'canvasId': 'wheelCanvas',
+      'numSegments': prompts.length,
+      'outerRadius': 220,
+      'textAlignment': 'outer',
+      'segments': segments,
+      'animation': {
+        'type': 'spinToStop',
+        'duration': 10,
+        'spins': 5,
+        'callbackFinished': alertPrize
+      },
+      'pointerAngle': 0
+    });
+
+    // Function to start the spin
+    function startSpin() {
+      // Disable the spin button
+      document.getElementById('spinButton').disabled = true;
+      theWheel.startAnimation();
+    }
+
+    // Function to handle the end of the spin
+    function alertPrize(indicatedSegment) {
+      // Display the prompt in an alert
+      alert("Prompt:\n" + indicatedSegment.text);
+
+      // Trigger confetti
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+
+      // Re-enable the spin button after a short delay
+      setTimeout(function() {
+        document.getElementById('spinButton').disabled = false;
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
